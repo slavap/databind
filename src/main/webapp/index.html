@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html class="no-js">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=7.0">
+
+    <!-- meta name="gwt:property" content="locale=ru" -->
+
+    <!-- iPad related settings: https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!-- --------------------- -->
+
+    <!-- Android/Chrome -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- --------------------- -->
+
+    <title>databind</title>
+
+    <script src="js/databinding.js"></script>
+
+    <script type="text/javascript">
+      // to make instanceof working for native js classes
+      function DtoGroup() {}
+      function DtoErrorMessage() {}
+    </script>
+    
+    <script type="text/javascript" src="databind/databind.nocache.js"></script>
+
+  </head>
+
+  <body>
+    <!-- OPTIONAL: include this if you want history support -->
+    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
+
+    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+    <noscript>
+      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif;">
+        Your web browser must have JavaScript enabled in order for SeawareTouch to display correctly.
+      </div>
+    </noscript>
+
+  </body>
+</html>

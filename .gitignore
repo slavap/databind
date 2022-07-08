@@ -21,3 +21,28 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+.settings
+target
+.classpath
+.factorypath
+.project
+.errai
+.springBeans
+.metadata
+gwt-unitCache
+\_generators
+log
+\catalina.*
+*.cache
+*.tmp
+*.log
+*.iml
+.idea
+.recommenders
+.sts4-cache
+/.apt_generated
+/.gwt
+/misc/cssutil/.idea/
+/.externalToolBuilders
+/*.launch

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='databind'>
+
+    <inherits name='com.google.gwt.user.User' />
+    <!--<inherits name='com.google.gwt.junit.JUnit' />-->
+    
+    <inherits name="jsinterop.base.Base" />
+    <inherits name="gwt.interop.utils.InteropUtils" />
+    <inherits name="elemental2.core.Core" />
+    <inherits name="elemental2.dom.Dom" />
+    
+    <inherits name="com.google.gwt.logging.Logging"/>
+    <inherits name="ru.finam.slf4jgwt.logging.gwt.Logging" />
+    
+    <set-property name="gwt.logging.enabled" value="TRUE" />
+
+    <!-- See gwt-user\com\google\gwt\logging\LoggingDisabled.gwt.xml for gwt.logging.xxx possible values --> 
+
+    <!-- ALL, FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE --> 
+    <!-- CONFIG is used for debug logging, because there is no dedicated DEBUG level -->
+    <set-property name="gwt.logging.logLevel" value="INFO" />
+      
+    <!-- logs to System.out or System.err -->
+    <set-property name="gwt.logging.systemHandler" value="DISABLED" />
+
+    <!-- logs to GWT.log, causing the messages to show up in the Development Mode tab in Eclipse when running in Development mode -->
+    <set-property name="gwt.logging.developmentModeHandler" value="ENABLED" />
+
+    <!-- logs to the window.console, i.e. browser's console -->
+    <set-property name="gwt.logging.consoleHandler" value="ENABLED" />
+      
+    <!-- logs to any widget which extends the HasWidgets interface, PopupLogHandler is used by default -->
+    <set-property name="gwt.logging.hasWidgetsHandler" value="DISABLED" />
+
+    <!-- SLOW, very simple handler which sends messages to the server via GWT RPC to be logged -->
+    <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />
+      
+    <!-- END OF logging configuration -->  
+    
+    <inherits name='org.jboss.errai9.common.ErraiCommon' />
+    <inherits name='org.jboss.errai9.databinding.DataBinding' />
+  
+    <!-- See https://github.com/gwtproject/gwt/blob/master/user/src/com/google/gwt/useragent/rebind/UserAgentPropertyGenerator.java -->
+    <set-property name="user.agent" value="safari,gecko1_8" />
+    
+    <source path="client" />
+    
+    <entry-point class='com.vx.sw.client.DatabindEntryPoint' />
+    
+    <add-linker name="xsiframe" />
+
+</module>

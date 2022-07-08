@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.vx.sw</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+    
+    <artifactId>databind</artifactId>
+    <packaging>war</packaging>
+
+    <name>databind examples</name>
+    <description>databind examples</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <gwt.version>2.10.0</gwt.version>
+        <gwt.plugin.version>2.10.0</gwt.plugin.version>
+        
+        <gwt.style>PRETTY</gwt.style>
+        <gwt.optimizationLevel>9</gwt.optimizationLevel>
+
+        <webapp.directory>${project.build.directory}/${project.artifactId}-${project.version}</webapp.directory>
+        
+        <maven.plugin.war.version>3.3.2</maven.plugin.war.version>
+        <maven.plugin.resources.version>3.2.0</maven.plugin.resources.version>
+        <maven.plugin.compiler.version>3.10.1</maven.plugin.compiler.version>
+    </properties>
+    
+    <dependencies>
+      <!--dependency>
+          <groupId>com.google.gwt</groupId>
+          <artifactId>gwt-servlet</artifactId>
+          <version>${gwt.version}</version>
+          <scope>provided</scope>
+      </dependency-->
+      <dependency>
+          <groupId>com.google.gwt</groupId>
+          <artifactId>gwt-user</artifactId>
+          <version>${gwt.version}</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.google.gwt</groupId>
+          <artifactId>gwt-dev</artifactId>
+          <version>${gwt.version}</version>
+          <!-- scope>test</scope -->
+          <exclusions>
+            <exclusion>
+              <groupId>org.eclipse.jetty</groupId>
+              <artifactId>apache-jsp</artifactId> <!-- to make gwt:run work -->
+            </exclusion>
+          </exclusions>
+      </dependency>
+      
+      <dependency>
+        <groupId>ru.finam</groupId>
+        <artifactId>slf4j-gwt</artifactId>
+        <version>1.7.7.1</version>
+        <scope>provided</scope>
+      </dependency>
+      
+      <dependency>
+        <groupId>com.google.jsinterop</groupId>
+        <artifactId>base</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.elemental2</groupId>
+        <artifactId>elemental2-core</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.elemental2</groupId>
+        <artifactId>elemental2-dom</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.elemental2</groupId>
+        <artifactId>elemental2-promise</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava-gwt</artifactId>
+        <version>31.1-jre</version>
+        <scope>provided</scope> 
+      </dependency>
+      
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>2.13.3</version>
+      </dependency>
+      
+    </dependencies>
+
+    <build>
+        <!-- Generate compiled stuff in the folder used for developing mode allowing for real-time editting -->
+        <outputDirectory>${webapp.directory}/WEB-INF/classes</outputDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.plugin.resources.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.plugin.compiler.version}</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+        
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven.plugin.war.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webappDirectory>${webapp.directory}</webappDirectory>
+                    <!-- appengine supports Java7 only at the moment, but we don't have server side in examples,
+                         so it's actually just pure JS app, and we may trash all java stuff from war -->
+                    <packagingExcludes>WEB-INF/classes/**/*.class, WEB-INF/lib/*.jar</packagingExcludes>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>css/*.*</include>
+                                <include>data/*.*</include>
+                                <include>*.html</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="cleaning: ${webapp.directory}" />
+                                <delete>
+                                    <fileset dir="${webapp.directory}" includes="**/*.*" />
+                                </delete>
+                                <echo message="unpacking: ${webapp.directory}.war" />
+                                <unwar src="${webapp.directory}.war" dest="${webapp.directory}" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>    
+            </plugin>    
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${gwt.plugin.version}</version>
+                
+                <configuration>
+                    <gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
+                    <module>com.vx.sw.Databind</module>
+                    <sourceLevel>11</sourceLevel>
+                    
+                    <logLevel>INFO</logLevel>
+                    <strict>true</strict>
+                    <localWorkers>4</localWorkers>
+                    <generateJsInteropExports>true</generateJsInteropExports>
+                    <style>${gwt.style}</style>
+                    <optimizationLevel>${gwt.optimizationLevel}</optimizationLevel>
+                    <extraJvmArgs>-Xmx2048m</extraJvmArgs>
+                    <extraParam>true</extraParam>
+                    <!-- support for mvn gwt:run -->
+                    <runTarget>index.html</runTarget>
+                    <hostedWebapp>${webappDirectory}</hostedWebapp>
+                </configuration>
+                
+                <executions>
+                    <execution>
+                        <id>test-gwt</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <logLevel>INFO</logLevel>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile-gwt</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <style>${gwt.style}</style>
+                            <optimizationLevel>${gwt.optimizationLevel}</optimizationLevel>
+                            <logLevel>INFO</logLevel>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings
+                    only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.datanucleus</groupId>
+                                        <artifactId>
+                                            maven-datanucleus-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.1.4,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>enhance</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>
+                                            gwt-maven-plugin
+                                        </artifactId>
+                                        <versionRange>[1.2,)</versionRange>
+                                        <goals>
+                                            <goal>compile</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!-- Manage versions of dependencies unique to this module here (all others managed in parent) -->
+    <dependencyManagement>
+        <dependencies>
+            
+        </dependencies>
+    </dependencyManagement>
+
+</project>
